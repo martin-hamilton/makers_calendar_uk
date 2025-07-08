@@ -11,9 +11,10 @@ Assuming you are using github for this but there isn't anything stopping you hos
   * Fill in the calendar name
   * Fill in the description
   * Fill in the repo name using your fork.
-  * Decide if you want a link to the repo to be displayed so people know where to come to add entries to it
-* Enter your entries in the `entries.csv` file.
-  *
+  * Decide if you want a link to the repo to be displayed so people know where to come to add events to it
+* Enter your events in the `events.csv` file.
+  * The header line must be left in there.
+  * If you provide a latitude and longitude location it will link to open street map to show people where the event is.
 * Enable github pages on the main branch and wait for the action to run.
 
 ## Design Principles
@@ -25,4 +26,5 @@ Assuming you are using github for this but there isn't anything stopping you hos
 
 ## TODO
 
+* Wire up the url column in the csv
 * Multi day events
