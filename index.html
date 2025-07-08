@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Calendar Page</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="calendar.js"></script>
+</head>
+
+<body onload="init()">
+    <div class="heading">
+        <h1 id="heading">Calendar Page</h1>
+        <p id="description">a helpful calendar page</p>
+        <a id="update_link" href="https://github.com/emilywselwood/calendar_page">Add something to the calendar</a>
+    </div>
+    <div class="container">
+        <div class="calHeader">
+            <div id="prevMonthLink" class="calChangeMonth, calHeaderCell, calHeaderRight">&lt;</div>
+            <div id="calDateHeader" class="calDateHeader, calHeaderCell">July 2025</div>
+            <div id="nextMonthLink" class="calChangeMonth, calHeaderCell, calHeaderLeft">&gt;</div>
+        </div>
+        <div class="weekDays">
+            <div class="weekDay"><abbr title="Monday">M</abbr></div>
+            <div class="weekDay"><abbr title="Tuesday">T</abbr></div>
+            <div class="weekDay"><abbr title="Wednesday">W</abbr></div>
+            <div class="weekDay"><abbr title="Thursday">T</abbr></div>
+            <div class="weekDay"><abbr title="Friday">F</abbr></div>
+            <div class="weekDay"><abbr title="Saturday">S</abbr></div>
+            <div class="weekDay"><abbr title="Sunday">S</abbr></div>
+        </div>
+        <div id="calGrid" class="calGrid"></div>
+    </div>
+</body>
+
+</html>
