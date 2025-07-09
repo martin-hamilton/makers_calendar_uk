@@ -2,7 +2,10 @@
 let events = {}
 let config = {}
 
+
+
 function csvToArray(text) {
+    // cribbed from stack overflow...
     let p = '', row = [''], ret = [row], i = 0, r = 0, s = !0, l;
     for (l of text) {
         if ('"' === l) {
@@ -19,7 +22,9 @@ function csvToArray(text) {
 };
 
 async function downloadData() {
-    const response = await fetch("./events.csv");
+    // This cache breaker works for now but is not ideal. Being able to cache for a few minutes would be ideal.
+    const cacheBreaker = Math.random()
+    const response = await fetch("./events.csv?q=" + cacheBreaker);
     const data = await response.text();
 
     const toProcess = csvToArray(data);
@@ -30,7 +35,7 @@ async function downloadData() {
             continue;
         }
         console.log(row);
-        // "Name", " Start date", " Start time", " End date", " End Time", " Description", " URL", " Latitude", " Longitude"
+        // "Name", "Start date", "Start time", "End date", "End Time", "Description", "URL", "Latitude", "Longitude"
         const event = {
             "name": row[0].trim(),
             "startDate": row[1].trim(),
@@ -43,6 +48,7 @@ async function downloadData() {
             "longitude": row[8].trim(),
         };
 
+        // TODO: loop over days in between startDate and endDate and add to all the days
         if (!(event.startDate in events)) {
             events[event.startDate] = []
         }
@@ -111,17 +117,15 @@ async function init() {
     }
     setupHeader(year, month);
 
+    if (Object.getOwnPropertyNames(config).length == 0) {
+        loadConfig().then(applyConfig);
+    } else {
+        applyConfig();
+    }
+
     if (Object.getOwnPropertyNames(events).length == 0) {
         await downloadData();
     }
-
-    if (Object.getOwnPropertyNames(config).length == 0) {
-        await loadConfig();
-    }
-
-    applyConfig();
-
-
     clearMonthGrid();
 
     createMonthGrid(year, month, function (el, date) {
@@ -131,22 +135,30 @@ async function init() {
             console.log(date);
             for (let i = 0; i < events[dateStr].length; i++) {
                 const event = events[dateStr][i];
-                // todo: popup thingy
                 let eventEl = document.createElement("div");
                 eventEl.classList.add("event");
                 eventEl.innerText = event.name;
 
                 let eventPopupEl = document.createElement("div");
                 eventPopupEl.classList.add("popup");
-                eventPopupEl.innerHTML = `
-                    <div class=popupTitle>
-                        ${event.name}
-                    </div>
+                let popupHtml = "<div class=\"popupTitle\">";
+                if (event.url) {
+                    popupHtml = popupHtml + `<a href="${event.url}" target="_blank">${event.name}</a>`;
+                } else {
+                    popupHtml = popupHtml + event.name;
+                }
+                popupHtml = popupHtml + `</div>
                     <div>${event.description}</div>
                     <div>Starts: ${event.startDate} - ${event.startTime}</div>
-                    <div>Finish: ${event.endDate} - ${event.endTime}</div>
-                    <div>Location: <a href="https://www.openstreetmap.org/?mlat=${event.latitude}&mlon=${event.longitude}#map=17/${event.latitude}/${event.longitude}" target="_blank">${event.latitude}:${event.longitude}</a></div>
-                `
+                    <div>Finish: ${event.endDate} - ${event.endTime}</div>`;
+
+                if (event.latitude && event.longitude) {
+                    popupHtml = popupHtml + `
+                        <div>Location: <a href="https://www.openstreetmap.org/?mlat=${event.latitude}&mlon=${event.longitude}#map=17/${event.latitude}/${event.longitude}" target="_blank">${event.latitude}:${event.longitude}</a></div>
+                    `;
+                }
+
+                eventPopupEl.innerHTML = popupHtml;
 
                 eventEl.appendChild(eventPopupEl);
 
