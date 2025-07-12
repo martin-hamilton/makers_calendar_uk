@@ -228,7 +228,7 @@ function createMonthGrid(year, month, callback) {
     const daysInLastMonth = daysInMonth(year, month - 1);
 
     // Days from previous month to pad the week
-    for (let i = daysInLastMonth - lastDaysToShow; i < daysInLastMonth; i++) {
+    for (let i = daysInLastMonth - lastDaysToShow + 1; i <= daysInLastMonth; i++) {
         createDateElement(parentEl, year, month - 1, i, false, callback)
     }
 
@@ -238,8 +238,10 @@ function createMonthGrid(year, month, callback) {
     }
 
     // Days in next month to pad the grid
-    for (let i = 1; i <= 7 - lastOfMonth.getDay(); i++) {
-        createDateElement(parentEl, year, month + 1, i, false, callback)
+    if (lastOfMonth.getDay() > 0) {
+        for (let i = 1; i <= 7 - lastOfMonth.getDay(); i++) {
+            createDateElement(parentEl, year, month + 1, i, false, callback)
+        }
     }
 
 }
