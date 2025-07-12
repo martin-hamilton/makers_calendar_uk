@@ -12,7 +12,7 @@ Assuming you are using github for this but there isn't anything stopping you hos
   * Fill in the description
   * Fill in the repo name using your fork.
   * Decide if you want a link to the repo to be displayed so people know where to come to add events to it
-* Enter your events in the `events.csv` file.
+* Rename the `events_example.csv` to `events.csv`. This will make it easier to update later.
   * The header line must be left in there.
   * For the sake of everyone's sanity all events are assumed to be in the same timezone.
   * If you provide a latitude and longitude location it will link to open street map to show people where the event is.
@@ -27,5 +27,4 @@ Assuming you are using github for this but there isn't anything stopping you hos
 
 ## TODO
 
-* Multi day events
 * ICS Download

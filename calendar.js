@@ -24,7 +24,12 @@ function csvToArray(text) {
 async function downloadData() {
     // This cache breaker works for now but is not ideal. Being able to cache for a few minutes would be ideal.
     const cacheBreaker = Math.random()
-    const response = await fetch("./events.csv?q=" + cacheBreaker);
+    let response = await fetch("./events.csv?q=" + cacheBreaker);
+    if (!response.ok) {
+        console.log("Could not get events.csv do you need to rename the events_example.csv?");
+        console.log("While this will work you'll have issues when you want to update");
+        response = await fetch("./events_example.csv?q=" + cacheBreaker);
+    }
     const data = await response.text();
 
     const toProcess = csvToArray(data);
@@ -48,11 +53,18 @@ async function downloadData() {
             "longitude": row[8].trim(),
         };
 
-        // TODO: loop over days in between startDate and endDate and add to all the days
-        if (!(event.startDate in events)) {
-            events[event.startDate] = []
+        // Add an entry for each day
+        let currentDate = new Date(event.startDate);
+        let endDate = new Date(event.endDate);
+        while (currentDate <= endDate) {
+            const dateValue = format_date(currentDate);
+            if (!(dateValue in events)) {
+                events[dateValue] = []
+            }
+            events[dateValue].push(event);
+
+            currentDate.setDate(currentDate.getDate() + 1);
         }
-        events[event.startDate].push(event);
     }
 }
 
