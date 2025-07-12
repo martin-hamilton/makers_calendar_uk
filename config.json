@@ -1,6 +1,6 @@
 {
-    "name": "test calendar",
-    "repo": "https://github.com/emilyselwood/calendar_page",
-    "description": "A basic test calendar",
+    "name": "Makers Calendar UK",
+    "repo": "https://github.com/emilyselwood/makers_calendar_uk",
+    "description": "A calendar of uk maker events",
     "showUpdateLink": "true"
 }
