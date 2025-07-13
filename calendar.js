@@ -79,6 +79,7 @@ async function loadConfig() {
 function applyConfig() {
     document.getElementById("heading").innerText = config.name;
     document.getElementById("description").innerText = config.description;
+    document.title = config.name;
 
     const linkEl = document.getElementById("update_link");
     if (config.showUpdateLink && config.showUpdateLink == "true") {
