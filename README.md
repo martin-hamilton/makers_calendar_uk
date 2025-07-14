@@ -32,7 +32,7 @@ Assembled using [Calendar Page](https://github.com/emilyselwood/calendar_page)
   * Name
   * Start date
   * Start time
-  * End date
+  * End date (can be a different day to the start date, the event will be shown on every day between the two)
   * End time
   * Description
   * Url
